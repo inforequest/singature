@@ -32,7 +32,6 @@ body{margin:0;background:var(--paper);color:var(--ink);font-family:"DM Sans",Ari
 .field label{display:block;font-size:11px;font-weight:800;color:#45525c;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px}  
 .field input{width:100%;border:1px solid #d6dfe2;background:#f8fbfa;border-radius:10px;padding:13px 14px;color:var(--ink);outline:none;font-size:14px;font-family:inherit;transition:border-color .2s,box-shadow .2s,background .2s}  
 .field input:focus{border-color:var(--navy);background:#fff;box-shadow:0 0 0 4px rgba(183,255,60,.35)}  
-.hint{margin:20px 0 0;font-size:13px;color:var(--muted);line-height:1.6}  
 .sigs{margin-top:28px;display:flex;flex-direction:column;gap:22px}  
 .sig-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 28px;border-bottom:1px solid var(--line)}  
 .sig-head strong{font-family:Manrope;font-weight:800;font-size:18px;letter-spacing:-.02em}  
@@ -42,13 +41,13 @@ body{margin:0;background:var(--paper);color:var(--ink);font-family:"DM Sans",Ari
 .btn-dark{background:var(--navy);color:#fff}  
 .btn-ghost{background:#fff;color:var(--navy);border-color:#d6dfe2}  
 .sig-body{padding:34px 28px;overflow-x:auto}  
-.help{margin:34px 0 60px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px}  
+.help{margin:34px 0 60px;display:grid;grid-template-columns:1fr;max-width:380px}  
 .help-card{padding:22px 24px}  
 .help-card h3{font-family:Manrope;font-weight:800;font-size:16px;margin:0 0 10px}  
 .help-card p{margin:0;font-size:13px;color:var(--muted);line-height:1.6}  
 #toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;padding:13px 20px;border-radius:999px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:50}  
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}  
-@media(max-width:900px){.details-grid{grid-template-columns:1fr 1fr}.help{grid-template-columns:1fr}.sig-head{flex-direction:column;align-items:flex-start}}  
+@media(max-width:900px){.details-grid{grid-template-columns:1fr 1fr}.sig-head{flex-direction:column;align-items:flex-start}}  
 @media(max-width:560px){.details-grid{grid-template-columns:1fr}}  
 </style>  
 </head>  
@@ -61,7 +60,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font-family:"DM Sans",Ari
       <span class="txt">UK MERCHANT<br>CAPITAL</span>  
     </div>  
     <h1>Email signatures, <em>five ways.</em></h1>  
-    <p>Edit your details once and every signature updates. Hit "Copy signature" and paste straight into Gmail, Outlook or Apple Mail.</p>  
+    <p>Edit your details once and every signature updates. Hit "Copy signature" and paste straight into your email settings.</p>  
   </div>  
 </header>  
 <main class="container">  
@@ -73,54 +72,88 @@ body{margin:0;background:var(--paper);color:var(--ink);font-family:"DM Sans",Ari
       <div class="field"><label for="s-phone">Phone</label><input id="s-phone" type="tel" value="+44 7123 456789"></div>  
       <div class="field"><label for="s-email">Email</label><input id="s-email" type="email" value="alex@ukmerchantcapital.co.uk"></div>  
       <div class="field"><label for="s-website">Website</label><input id="s-website" type="text" value="ukmerchantcapital.co.uk"></div>  
-      <div class="field"><label for="s-image">Image location</label><input id="s-image" type="text" value=""></div>  
     </div>  
-    <p class="hint">Email apps can only show the logo if it lives online. Leave <b>Image location</b> blank to use the built-in logo, or host PNG logos (<code>ukmc-lockup-navy.png</code>, <code>ukmc-lockup-white.png</code>) and paste the folder URL here for full Outlook compatibility.</p>  
   </section>  
+  
   <section class="sigs">  
-    <article class="card"><div class="sig-head"><strong>1. Classic</strong><div class="sig-btns"><button class="btn btn-dark" data-copy="classic" data-type="rich">Copy signature</button><button class="btn btn-ghost" data-copy="classic" data-type="html">Copy HTML</button></div></div><div class="sig-body"><div id="sig-classic"></div></div></article>  
-    <article class="card"><div class="sig-head"><strong>2. Midnight card</strong><div class="sig-btns"><button class="btn btn-dark" data-copy="midnight" data-type="rich">Copy signature</button><button class="btn btn-ghost" data-copy="midnight" data-type="html">Copy HTML</button></div></div><div class="sig-body"><div id="sig-midnight"></div></div></article>  
-    <article class="card"><div class="sig-head"><strong>3. Minimal</strong><div class="sig-btns"><button class="btn btn-dark" data-copy="minimal" data-type="rich">Copy signature</button><button class="btn btn-ghost" data-copy="minimal" data-type="html">Copy HTML</button></div></div><div class="sig-body"><div id="sig-minimal"></div></div></article>  
-    <article class="card"><div class="sig-head"><strong>4. Mint + call to action</strong><div class="sig-btns"><button class="btn btn-dark" data-copy="mint" data-type="rich">Copy signature</button><button class="btn btn-ghost" data-copy="mint" data-type="html">Copy HTML</button></div></div><div class="sig-body"><div id="sig-mint"></div></div></article>  
-    <article class="card"><div class="sig-head"><strong>5. Banner</strong><div class="sig-btns"><button class="btn btn-dark" data-copy="banner" data-type="rich">Copy signature</button><button class="btn btn-ghost" data-copy="banner" data-type="html">Copy HTML</button></div></div><div class="sig-body"><div id="sig-banner"></div></div></article>  
+    <article class="card">  
+      <div class="sig-head"><strong>1. Classic</strong>  
+        <div class="sig-btns"><button class="btn btn-dark" data-copy="classic" data-type="rich">Copy signature</button><button class="btn btn-ghost" data-copy="classic" data-type="html">Copy HTML</button></div>  
+      </div>  
+      <div class="sig-body"><div id="sig-classic"></div></div>  
+    </article>  
+    <article class="card">  
+      <div class="sig-head"><strong>2. Midnight card</strong>  
+        <div class="sig-btns"><button class="btn btn-dark" data-copy="midnight" data-type="rich">Copy signature</button><button class="btn btn-ghost" data-copy="midnight" data-type="html">Copy HTML</button></div>  
+      </div>  
+      <div class="sig-body"><div id="sig-midnight"></div></div>  
+    </article>  
+    <article class="card">  
+      <div class="sig-head"><strong>3. Minimal</strong>  
+        <div class="sig-btns"><button class="btn btn-dark" data-copy="minimal" data-type="rich">Copy signature</button><button class="btn btn-ghost" data-copy="minimal" data-type="html">Copy HTML</button></div>  
+      </div>  
+      <div class="sig-body"><div id="sig-minimal"></div></div>  
+    </article>  
+    <article class="card">  
+      <div class="sig-head"><strong>4. Mint + call to action</strong>  
+        <div class="sig-btns"><button class="btn btn-dark" data-copy="mint" data-type="rich">Copy signature</button><button class="btn btn-ghost" data-copy="mint" data-type="html">Copy HTML</button></div>  
+      </div>  
+      <div class="sig-body"><div id="sig-mint"></div></div>  
+    </article>  
+    <article class="card">  
+      <div class="sig-head"><strong>5. Banner</strong>  
+        <div class="sig-btns"><button class="btn btn-dark" data-copy="banner" data-type="rich">Copy signature</button><button class="btn btn-ghost" data-copy="banner" data-type="html">Copy HTML</button></div>  
+      </div>  
+      <div class="sig-body"><div id="sig-banner"></div></div>  
+    </article>  
   </section>  
+  
   <section class="help">  
-    <div class="card help-card"><h3>Gmail</h3><p>Settings → See all settings → General → Signature → Create new. Paste, then save at the bottom.</p></div>  
-    <div class="card help-card"><h3>Outlook</h3><p>Settings → Mail → Compose and reply → Email signature. Paste, then save.</p></div>  
-    <div class="card help-card"><h3>Apple Mail</h3><p>Mail → Settings → Signatures → +. Untick "Always match my default message font", then paste.</p></div>  
+    <div class="card help-card"><h3>Gmail</h3><p>Settings &rarr; See all settings &rarr; General &rarr; Signature &rarr; Create new. Paste, then save at the bottom.</p></div>  
   </section>  
 </main>  
 <div id="toast"></div>  
+  
 <script>  
+/* ---------- Logos (built in; no files needed for the page) ---------- */  
 const MARK = '<path d="M13 65h48v93c0 22 21 36 47.5 36s47.5-14 47.5-36V65h48v82l80-82h59l-82 83.5 81 85.5h-58.5L204 150v8c0 47-38 76-95.5 76S13 205 13 158z"/><path d="M346 234V79l89 67.5v53l-42.5-31.8V234z"/><path d="M487 234V135.6L534 97v137z"/><path d="M716 64h-96c-48 0-82 38-82 85s34 85 82 85h96v-41h-86c-23 0-40-20-40-44s17-45 40-45h86z"/>';  
 const CHEV = '<path d="M439.5 102.5L483 67v68l-43.5 37z"/><path d="M488 61l46-38.3v65.8L488 128z"/>';  
-const toURI = s => "data:image/svg+xml;charset=utf-8," + encodeURIComponent(s);  
 function lockup(textColor, markColor){  
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 96"><g transform="scale(0.265)"><g fill="${markColor}">${MARK}</g><g fill="#B7FF3C">${CHEV}</g></g><text x="4" y="90" font-family="Arial,sans-serif" font-weight="700" font-size="13" letter-spacing="2" fill="${textColor}">UK MERCHANT CAPITAL</text></svg>`;  
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 96">`  
+    + `<g transform="translate(6,0) scale(0.265)"><g fill="${markColor}">${MARK}</g><g fill="#B7FF3C">${CHEV}</g></g>`  
+    + `<text x="4" y="90" font-family="Arial, sans-serif" font-weight="700" font-size="13" letter-spacing="2" fill="${textColor}">UK MERCHANT CAPITAL</text></svg>`;  
 }  
-const LOGO_DATA = { navy: toURI(lockup("#0B1B28","#0B1B28")), white: toURI(lockup("#ffffff","#ffffff")) };  
-const FILES = { navy: "ukmc-lockup-navy.png", white: "ukmc-lockup-white.png" };  
+const uri = s => "data:image/svg+xml;charset=utf-8," + encodeURIComponent(s);  
+const LOGO_DATA = { navy: uri(lockup("#0B1B28","#0B1B28")), white: uri(lockup("#ffffff","#ffffff")) };  
   
+/* Hosted logo files used in copied signatures (SVGs are stripped by some clients).  
+   Upload ukmc-lockup-navy.png and ukmc-lockup-white.png to this folder on the site. */  
+const IMAGE_BASE = "https://ukmerchantcapital.co.uk/email-signatures/images";  
+const FILES = { navy:"ukmc-lockup-navy.png", white:"ukmc-lockup-white.png" };  
+  
+/* Contact icons as data URIs so they render in emails */  
 const ICON = {  
-  phone: toURI('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#8fd61a"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.3 1z"/></svg>'),  
-  mail:  toURI('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#8fd61a"><path d="M3 5h18c.6 0 1 .4 1 1v12c0 .6-.4 1-1 1H3c-.6 0-1-.4-1-1V6c0-.6.4-1 1-1zm9 7l8-5.2V6H4v.8L12 12z"/></svg>'),  
-  web:   toURI('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#8fd61a" stroke-width="2"><circle cx="12" cy="12" r="9"/><line x1="3" y1="12" x2="21" y2="12"/><path d="M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18"/></svg>')  
+  phone: uri('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#8fd61a" d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.4 21 3 13.6 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1z"/></svg>'),  
+  mail:  uri('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#8fd61a" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5z"/></svg>'),  
+  web:   uri('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#8fd61a" d="M12 2a10 10 0 100 20 10 10 0 000-20zm7.9 9h-3a15.7 15.7 0 00-1.3-5A8 8 0 0119.9 11zM12 4c.8 1.2 1.6 3 1.9 5h-3.8c.3-2 1.1-3.8 1.9-5zM4.1 13h3c.2 1.9.7 3.6 1.3 5A8 8 0 014.1 13zm3-2h-3a8 8 0 014.3-5A15.7 15.7 0 007.1 11zM12 20c-.8-1.2-1.6-3-1.9-5h3.8c-.3 2-1.1 3.8-1.9 5zm2.4-2a15.7 15.7 0 001.3-5h3a8 8 0 01-4.3 5z"/></svg>')  
 };  
   
+/* CTA pill — identical in all templates */  
 const CTA_URL = "https://ukmerchantcapital.co.uk";  
-const CTA_TEXT = "Get a funding estimate";  
-const CTA = `<table cellpadding="0" cellspacing="0" style="border-collapse:collapse"><tr><td style="background:#B7FF3C;border-radius:999px;padding:9px 16px;font-size:13px;font-weight:700;font-family:Arial,Helvetica,sans-serif"><a href="${CTA_URL}" style="color:#0B1B28;text-decoration:none">${CTA_TEXT} &#8599;</a></td></tr></table>`;  
+const CTA = `<table cellpadding="0" cellspacing="0" style="border-collapse:collapse"><tr><td style="background:#B7FF3C;border-radius:999px"><a href="${CTA_URL}" style="display:inline-block;padding:10px 20px;font-size:13px;font-weight:700;color:#0B1B28;text-decoration:none;font-family:Arial,Helvetica,sans-serif">Get a funding estimate &#8599;</a></td></tr></table>`;  
   
-const fields = ["name","title","phone","email","website","image"];  
-const inputs = {}; fields.forEach(f => inputs[f] = document.getElementById("s-" + f));  
+const fields = ["name","title","phone","email","website"];  
+const inputs = {};  
+fields.forEach(f => inputs[f] = document.getElementById("s-" + f));  
 const esc = s => String(s||"").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));  
-function logoSrc(variant, fe){  
-  const loc = inputs.image.value.trim();  
-  if (fe && loc) return loc.replace(/\/$/,"") + "/" + FILES[variant];  
+  
+function logoSrc(variant, forEmail){  
+  if (forEmail) return IMAGE_BASE + "/" + FILES[variant];  
   return LOGO_DATA[variant];  
 }  
 function vals(){  
-  const v = {}; fields.forEach(f => v[f] = inputs[f].value.trim());  
+  const v = {};  
+  fields.forEach(f => v[f] = inputs[f].value.trim());  
   v.siteUrl = v.website.startsWith("http") ? v.website : "https://" + v.website;  
   return v;  
 }  
@@ -135,7 +168,7 @@ function contacts(v, color, linkColor){
     + `</table>`;  
 }  
   
-/* 1. Classic */  
+/* ---------- Templates ---------- */  
 function classic(v, fe){  
   return `<table cellpadding="0" cellspacing="0" style="border-collapse:collapse;font-family:Arial,Helvetica,sans-serif"><tr>  
     <td style="vertical-align:middle;padding-right:22px"><img src="${logoSrc('navy',fe)}" alt="UK Merchant Capital" width="210" style="display:block;width:210px;height:auto"></td>  
@@ -147,7 +180,6 @@ function classic(v, fe){
       <div style="padding-top:14px">${CTA}</div>  
     </td></tr></table>`;  
 }  
-/* 2. Midnight card */  
 function midnight(v, fe){  
   return `<table cellpadding="0" cellspacing="0" style="border-collapse:collapse;font-family:Arial,Helvetica,sans-serif"><tr><td style="background:#0B1B28;border-radius:14px;padding:26px 30px">  
     <table cellpadding="0" cellspacing="0" style="border-collapse:collapse"><tr>  
@@ -157,16 +189,16 @@ function midnight(v, fe){
         <div style="font-size:21px;font-weight:700;color:#ffffff">${esc(v.name)}</div>  
         <div style="font-size:13px;color:#aebcc6;padding:2px 0 12px">${esc(v.title)}</div>  
         ${contacts(v,"#cfe0ea","#ffffff")}  
+        <div style="padding-top:14px">${CTA}</div>  
       </td>  
       <td style="width:1px;background:rgba(255,255,255,.25);font-size:0">&nbsp;</td>  
-      <td style="vertical-align:middle;padding:0 24px">  
+      <td style="vertical-align:middle;padding-left:28px">  
         <div style="font-size:13px;font-weight:700;letter-spacing:2px;color:#ffffff">FUNDING</div>  
         <div style="font-size:13px;font-weight:700;letter-spacing:2px;color:#B7FF3C">YOUR GROWTH.</div>  
       </td>  
-      <td style="vertical-align:middle;background:#B7FF3C;border-radius:0 10px 10px 0;padding:24px 14px">&nbsp;</td>  
+      <td style="vertical-align:middle;background:#B7FF3C;border-radius:0 10px 10px 0;padding:20px 10px">&nbsp;</td>  
     </tr></table></td></tr></table>`;  
 }  
-/* 3. Minimal */  
 function minimal(v, fe){  
   return `<table cellpadding="0" cellspacing="0" style="border-collapse:collapse;font-family:Arial,Helvetica,sans-serif">  
     <tr>  
@@ -188,7 +220,6 @@ function minimal(v, fe){
       <div style="padding-top:16px">${CTA}</div>  
     </td></tr></table>`;  
 }  
-/* 4. Mint + CTA */  
 function mint(v, fe){  
   return `<table cellpadding="0" cellspacing="0" style="border-collapse:collapse;font-family:Arial,Helvetica,sans-serif"><tr><td style="background:#e3f3ee;border-radius:14px;padding:24px 28px">  
     <table cellpadding="0" cellspacing="0" style="border-collapse:collapse"><tr>  
@@ -202,7 +233,6 @@ function mint(v, fe){
       <td style="vertical-align:middle;padding-left:26px">${CTA}</td>  
     </tr></table></td></tr></table>`;  
 }  
-/* 5. Banner */  
 function banner(v, fe){  
   return `<table cellpadding="0" cellspacing="0" style="border-collapse:collapse;font-family:Arial,Helvetica,sans-serif"><tr><td style="background:#0B1B28;border-radius:14px;padding:22px 28px">  
     <table cellpadding="0" cellspacing="0" style="border-collapse:collapse"><tr>  
@@ -217,7 +247,7 @@ function banner(v, fe){
         <div style="font-size:15px;font-weight:800;letter-spacing:1px;color:#ffffff;line-height:1.3">FAST FUNDING.<br><span style="color:#B7FF3C">REAL GROWTH.</span></div>  
         <div style="padding-top:12px">${CTA}</div>  
       </td>  
-      <td style="vertical-align:middle;background:#B7FF3C;border-radius:0 10px 10px 0;padding:20px 12px">&nbsp;</td>  
+      <td style="vertical-align:middle;background:#B7FF3C;border-radius:0 10px 10px 0;padding:20px 10px">&nbsp;</td>  
     </tr></table></td></tr></table>`;  
 }  
   
