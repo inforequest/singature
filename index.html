@@ -161,7 +161,7 @@ const ICON = {
   web:   ic('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#8fd61a" stroke-width="2"><circle cx="12" cy="12" r="9"/><line x1="3" y1="12" x2="21" y2="12"/><path d="M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18"/></svg>')  
 };  
   
-/* ---------- CTA (same wording as before) ---------- */  
+/* ---------- CTA ---------- */  
 const CTA_URL = "https://ukmerchantcapital.co.uk";  
 const CTA_TEXT = "Get a funding estimate";  
 const CTA = `<table cellpadding="0" cellspacing="0" style="border-collapse:collapse"><tr><td style="background:#B7FF3C;border-radius:999px;padding:9px 16px;font-size:13px;font-weight:700;font-family:Arial,Helvetica,sans-serif"><a href="${CTA_URL}" style="color:#0B1B28;text-decoration:none">${CTA_TEXT} &#8599;</a></td></tr></table>`;  
@@ -259,4 +259,78 @@ function mint(v, fe){
 function banner(v, fe){  
   return `<table cellpadding="0" cellspacing="0" style="border-collapse:collapse;font-family:Arial,Helvetica,sans-serif"><tr><td style="background:#0B1B28;border-radius:14px;padding:22px 28px">  
     <table cellpadding="0" cellspacing="0" style="border-collapse:collapse"><tr>  
-      <td style="vertical-align:middle;padding-right:22px"><img src="${logoSr
+      <td style="vertical-align:middle;padding-right:22px"><img src="${logoSrc('white',fe)}" alt="UK Merchant Capital" width="180" style="display:block;width:180px;height:auto"></td>  
+      <td style="width:1px;background:rgba(255,255,255,.25);font-size:0">&nbsp;</td>  
+      <td style="vertical-align:middle;padding:0 26px">  
+        <div style="font-size:20px;font-weight:700;color:#ffffff">${esc(v.name)}</div>  
+        <div style="font-size:13px;color:#aebcc6;padding:2px 0 12px">${esc(v.title)}</div>  
+        ${contacts(v,"#cfe0ea","#ffffff")}  
+      </td>  
+      <td style="vertical-align:middle;padding-left:26px">  
+        <div style="font-size:15px;font-weight:800;letter-spacing:1px;color:#ffffff;line-height:1.3">FAST FUNDING.<br><span style="color:#B7FF3C">REAL GROWTH.</span></div>  
+        <div style="padding-top:12px">${CTA}</div>  
+      </td>  
+    </tr></table></td></tr></table>`;  
+}  
+  
+const TEMPLATES = { classic, midnight, minimal, mint, banner };  
+  
+/* ---------- Render ---------- */  
+function render(){  
+  const v = vals();  
+  Object.keys(TEMPLATES).forEach(id => {  
+    document.getElementById("sig-" + id).innerHTML = TEMPLATES[id](v, false);  
+  });  
+}  
+fields.forEach(f => inputs[f].addEventListener("input", render));  
+render();  
+  
+/* ---------- Copy ---------- */  
+const toast = document.getElementById("toast");  
+let toastTimer;  
+function showToast(msg){  
+  toast.textContent = msg;  
+  toast.classList.add("show");  
+  clearTimeout(toastTimer);  
+  toastTimer = setTimeout(() => toast.classList.remove("show"), 2600);  
+}  
+  
+async function copyRich(html){  
+  // Render once into a hidden node so text/plain fallback reads clean text  
+  const holder = document.createElement("div");  
+  holder.style.position = "fixed";  
+  holder.style.left = "-9999px";  
+  holder.innerHTML = html;  
+  document.body.appendChild(holder);  
+  try {  
+    await navigator.clipboard.write([new ClipboardItem({  
+      "text/html": new Blob([html], { type: "text/html" }),  
+      "text/plain": new Blob([holder.innerText], { type: "text/plain" })  
+    })]);  
+  } catch {  
+    const range = document.createRange();  
+    range.selectNode(holder);  
+    const sel = window.getSelection();  
+    sel.removeAllRanges(); sel.addRange(range);  
+    document.execCommand("copy");  
+    sel.removeAllRanges();  
+  }  
+  document.body.removeChild(holder);  
+}  
+  
+document.querySelectorAll("[data-copy]").forEach(btn => {  
+  btn.addEventListener("click", async () => {  
+    const id = btn.dataset.copy;  
+    const html = TEMPLATES[id](vals(), true); // forEmail = true -> use hosted logo if provided  
+    if (btn.dataset.type === "html") {  
+      await navigator.clipboard.writeText(html.trim());  
+      showToast("HTML copied");  
+    } else {  
+      await copyRich(html);  
+      showToast("Signature copied — paste into your email settings");  
+    }  
+  });  
+});  
+</script>  
+</body>  
+</html>
